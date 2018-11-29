@@ -1,7 +1,7 @@
 {
     "name": "apiary-bot",
     "version": "0.0.1",
-    "description": "Slack bot to interact with apiary for the RoboJacket's organization",
+    "description": "Slack bot that interacts with MyRoboJackets API (apiary)",
     "main": "bot.js",
     "scripts": {
         "start": "node bot.js"
