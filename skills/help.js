@@ -9,7 +9,7 @@ const commandHandlers = {
 module.exports = function(controller) {
     controller.on("slash_command", function(bot, message) {
         const command = message.command;
-        if (command in command_handlers) {
+        if (command in commandHandlers) {
             commandHandlers[command](bot, message);
         } else {
             bot.replyPrivate(
