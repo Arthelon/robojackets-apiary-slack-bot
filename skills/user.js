@@ -7,6 +7,7 @@ const httpClient = axios.create({
         Authorization: `Bearer ${process.env.API_TOKEN}`
     }
 });
+const SLACK_ID_REGEX = /^<@(.+?)>$/;
 
 function sendFail(bot, message) {
     bot.reply(
@@ -17,6 +18,24 @@ function sendFail(bot, message) {
 
 async function findUser(bot, message, name) {
     let resp;
+    const slackIdMatch = SLACK_ID_REGEX.exec(name);
+    if (slackIdMatch) {
+        const slackId = slackIdMatch[1];
+        const email = await new Promise((resolve, reject) => {
+            bot.api.users.info({ user: slackId }, function(err, resp) {
+                if (err) {
+                    reject(err);
+                } else {
+                    debug(resp.user.profile);
+                    resolve(resp.user.profile.email);
+                }
+            });
+        });
+        if (email) {
+            name = email.substring(0, email.indexOf("@"));
+        }
+    }
+    debug(name);
     resp = await httpClient.get("/users/search", {
         params: {
             keyword: name
