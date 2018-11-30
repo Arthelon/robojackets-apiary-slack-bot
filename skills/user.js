@@ -15,61 +15,73 @@ function sendFail(bot, message) {
     );
 }
 
-async function findUser(name) {
+async function findUser(bot, message, name) {
     let resp;
-    try {
-        resp = await httpClient.get("/users/search", {
-            params: {
-                keyword: name
-            }
-        });
-    } catch (err) {
-        debug(err);
-        sendFail(bot, message);
-    }
+    resp = await httpClient.get("/users/search", {
+        params: {
+            keyword: name
+        }
+    });
     const users = resp.data.users;
     if (users.length === 0) {
         bot.reply(
             message,
             "Sorry, I was not able to find the user you specified."
         );
-        return;
+        return null;
     }
     return users[0];
 }
 
 async function paidDuesListener(bot, message) {
     const name = message.match[1];
-    const user = await findUser(name);
-    debug(user);
-    if (user.is_active) {
-        bot.reply(
-            message,
-            `${user.full_name} has paid dues for this semester.`
-        );
-    } else {
-        bot.reply(
-            message,
-            `${user.full_name} has not paid dues for this semester.`
-        );
+    try {
+        const user = await findUser(bot, message, name);
+        if (!user) {
+            return;
+        } else if (user.is_active) {
+            bot.reply(
+                message,
+                `${user.full_name} has paid dues for this semester.`
+            );
+        } else {
+            bot.reply(
+                message,
+                `${user.full_name} has not paid dues for this semester.`
+            );
+        }
+    } catch (err) {
+        debug(err);
+        sendFail(bot, message);
     }
 }
 
 async function shirtSizeListener(bot, message) {
     const name = message.match[1];
-    const user = await findUser(name);
-    debug(user);
-    const shirtSize = user.shirt_size;
-    if (shirtSize) {
-        bot.reply(
-            message,
-            `${user.full_name} has a shirt size of ${shirtSize.toUpperCase()}.`
-        );
-    } else {
-        bot.reply(
-            message,
-            `Sorry, I was not able to find a shirt size for ${user.full_name}.`
-        );
+    try {
+        const user = await findUser(bot, message, name);
+        if (!user) {
+            return;
+        }
+        const shirtSize = user.shirt_size;
+        if (shirtSize) {
+            bot.reply(
+                message,
+                `${
+                    user.full_name
+                } has a shirt size of ${shirtSize.toUpperCase()}.`
+            );
+        } else {
+            bot.reply(
+                message,
+                `Sorry, I was not able to find a shirt size for ${
+                    user.full_name
+                }.`
+            );
+        }
+    } catch (err) {
+        debug(err);
+        sendFail(bot, message);
     }
 }
 
