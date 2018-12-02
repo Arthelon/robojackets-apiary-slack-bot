@@ -1,4 +1,6 @@
-# apiary-bot
+# robojackets-apiary-slack-bot
+
+This project is a Slack bot that performs simple queries on the [Apiary](https://github.com/robojackets/apiary) RoboJackets API.
 
 ## Setup
 
@@ -25,7 +27,7 @@ This project is built on the `howdyai/botkit-starter-slack` project. For more se
 
 ## Queries
 
-Here are the list of queries you can perform by DMing or mentioning the bot in a channel:
+Here is a list of queries you can perform by DMing or mentioning the bot in a channel:
 
 -   did _*USER*_ pay dues this semester
 -   what shirt size is _*USER*_
