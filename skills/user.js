@@ -106,12 +106,12 @@ async function shirtSizeListener(bot, message) {
 
 module.exports = function(controller) {
     controller.hears(
-        [/^did (.+) pay dues this semester/i],
+        [/^(?:did|has) (.+) (?:pay|paid) dues (?:for )?this semester/i],
         triggerEvents,
         paidDuesListener
     );
     controller.hears(
-        [/^what shirt size is (.+)/i],
+        [/^what shirt size is (.+?)\?+?/i],
         triggerEvents,
         shirtSizeListener
     );
