@@ -3,7 +3,7 @@ env(__dirname + "/.env");
 
 if (!process.env.clientId || !process.env.clientSecret || !process.env.PORT) {
     usage_tip();
-    // process.exit(1);
+    process.exit(1);
 }
 
 var Botkit = require("botkit");
@@ -18,6 +18,9 @@ var bot_options = {
     studio_token: process.env.studio_token,
     studio_command_uri: process.env.studio_command_uri
 };
+
+// Keep ./skills/help as the last path as it triggers the fallback listener
+const SKILLS_PATHS = ["./skills/users", "./skills/help"];
 
 // Use a mongo database if specified, otherwise store in a JSON file local to the app.
 // Mongo is automatically configured when deploying to Heroku
@@ -78,12 +81,9 @@ if (!process.env.clientId || !process.env.clientSecret) {
     // Load in some helpers that make running Botkit on Glitch.com better
     require(__dirname + "/components/plugin_glitch.js")(controller);
 
-    var normalizedPath = require("path").join(__dirname, "skills");
-    require("fs")
-        .readdirSync(normalizedPath)
-        .forEach(function(file) {
-            require("./skills/" + file)(controller);
-        });
+    SKILLS_PATHS.forEach(path => {
+        require(path)(controller);
+    });
 }
 
 function usage_tip() {

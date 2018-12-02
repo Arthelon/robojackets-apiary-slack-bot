@@ -27,4 +27,14 @@ module.exports = function(controller) {
     ) {
         bot.reply(message, HELP_MESSAGE);
     });
+    // Fallback Listener
+    controller.hears(/.*/, "direct_message,direct_mention", function(
+        bot,
+        message
+    ) {
+        bot.reply(
+            message,
+            `Sorry, I did not understand your query. ${HELP_MESSAGE}`
+        );
+    });
 };
