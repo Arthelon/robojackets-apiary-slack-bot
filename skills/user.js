@@ -111,7 +111,7 @@ module.exports = function(controller) {
         paidDuesListener
     );
     controller.hears(
-        [/^what shirt size is (.+?)\?+?/i],
+        [/^what shirt size is (.+?)\?*$/i],
         triggerEvents,
         shirtSizeListener
     );
