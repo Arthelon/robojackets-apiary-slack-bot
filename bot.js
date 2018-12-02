@@ -20,7 +20,7 @@ var bot_options = {
 };
 
 // Keep ./skills/help as the last path as it triggers the fallback listener
-const SKILLS_PATHS = ["./skills/users", "./skills/help"];
+const SKILLS_PATHS = ["./skills/user", "./skills/help"];
 
 // Use a mongo database if specified, otherwise store in a JSON file local to the app.
 // Mongo is automatically configured when deploying to Heroku
