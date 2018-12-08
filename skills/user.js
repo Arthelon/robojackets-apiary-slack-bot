@@ -1,12 +1,6 @@
-const axios = require("axios");
+const { httpClient } = require("../utils");
 const debug = require("debug")("skills::user");
 const triggerEvents = "direct_message,direct_mention";
-const httpClient = axios.create({
-    baseURL: process.env.API_URL,
-    headers: {
-        Authorization: `Bearer ${process.env.API_TOKEN}`
-    }
-});
 const SLACK_ID_REGEX = /^<@(.+?)>$/;
 
 function sendFail(bot, message) {
